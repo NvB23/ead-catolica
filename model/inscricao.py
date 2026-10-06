@@ -50,7 +50,8 @@ class Inscricao(db.Model):
     )
 
     curso = db.relationship(
-        "Curso"
+        "Curso",
+        back_populates="inscricoes"
     )
 
     __table_args__ = (

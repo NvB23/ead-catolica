@@ -46,3 +46,8 @@ class Curso(db.Model):
         secondary="professor_curso",
         back_populates="cursos"
     )
+
+    inscricoes = db.relationship(
+        "Inscricao",
+        back_populates="curso"
+    )
