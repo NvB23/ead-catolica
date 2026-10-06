@@ -1,10 +1,37 @@
-from pessoa import Pessoa
+from db.db_connection import db
+from model.pessoa import Pessoa
 
 class Professor(Pessoa):
+    __tablename__ = "professor"
 
-    def __init__(self, id, nome, email, senha, sobre) -> None:
-        super().__init__(id, nome, email, senha)
+    id = db.Column(
+        db.Integer,
+        db.ForeignKey("pessoa.id"),
+        primary_key=True
+    )
 
-        self.formacoes = []
-        self.sobre = sobre
-        self.graduacoes = []
+    sobre = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    formacoes = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    graduacoes = db.relationship(
+        "Graduacao",
+        secondary="professor_graduacao",
+        back_populates="professores"
+    )
+
+    cursos = db.relationship(
+        "Curso",
+        secondary="professor_curso",
+        back_populates="professores"
+    )
+
+    __mapper_args__ = {
+        "polymorphic_identity": "professor"
+    }
