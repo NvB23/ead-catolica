@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf with context %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('pagina.professor_cursos') }}">&larr; Meus cursos</a>
+<div class="titulo-pagina"><div><p class="sobretitulo">GERENCIAR AULAS</p><h1>{{ curso.nome }}</h1></div><a class="botao" href="{{ url_for('pagina.nova_aula', id=curso.id) }}">+ Nova aula</a></div>
+<div class="lista">{% for aula in curso.conteudos %}
+<div>{% include 'aula_material.html' %}<div class="acoes abaixo-cartao"><a class="botao secundario pequeno" href="{{ url_for('pagina.editar_aula', id=aula.id) }}">Editar aula</a><form action="{{ url_for('conteudo.remover', id=aula.id) }}" method="post" onsubmit="return confirm('Excluir esta aula?');">{{ csrf() }}<button class="botao excluir pequeno" type="submit">Excluir</button></form></div></div>
+{% else %}<div class="vazio"><h2>Nenhuma aula cadastrada</h2><p>Adicione textos, vídeos, áudios ou imagens para os alunos.</p></div>{% endfor %}</div>
+{% endblock %}

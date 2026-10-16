@@ -1,0 +1,6 @@
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">{% endmacro %}
+{% macro campo(nome, rotulo, valor='', tipo='text', obrigatorio=false, limite=150) %}
+<label for="{{ nome }}">{{ rotulo }}</label>
+<input id="{{ nome }}" name="{{ nome }}" type="{{ tipo }}" value="{{ valor or '' }}" {% if obrigatorio %}required{% endif %} maxlength="{{ limite }}" {% if tipo == 'password' %}autocomplete="new-password"{% endif %}>
+{% endmacro %}
+{% macro professores(curso) %}{% for professor in curso.professores %}{{ professor.nome }}{% if not loop.last %}, {% endif %}{% endfor %}{% endmacro %}

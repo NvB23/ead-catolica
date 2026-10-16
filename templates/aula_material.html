@@ -1,0 +1,37 @@
+{% set material = material_da_aula(aula) %}
+{% set endereco = url_for('pagina.material_aula', id=aula.id) if material.caminho else material.url %}
+<article class="painel aula-conteudo" id="aula-{{ aula.id }}">
+    <header class="aula-cabecalho">
+        <span class="aula-numero">{{ '%02d'|format(aula.ordem) }}</span>
+        <div><p class="sobretitulo">{{ aula.tipo.value }}</p><h2>{{ aula.nome }}</h2></div>
+    </header>
+    {% if aula.descricao %}<p class="aula-descricao">{{ aula.descricao }}</p>{% endif %}
+
+    {% if material.modo == 'video' %}
+    <div class="video-container">
+        <video controls playsinline preload="metadata" src="{{ endereco }}" aria-label="Vídeo da aula {{ aula.nome }}">
+            Seu navegador não suporta este vídeo.
+        </video>
+    </div>
+    <div class="material-rodape"><span>Use os controles para assistir e avançar no vídeo.</span><a href="{{ endereco }}" target="_blank" rel="noopener noreferrer">Abrir vídeo em outra guia &nearr;</a></div>
+    {% elif material.modo == 'youtube' %}
+    <div class="video-container youtube-player">
+        <iframe src="{{ material.embed }}" title="Vídeo da aula {{ aula.nome }}" loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="material-rodape"><span>Vídeo do YouTube</span><a href="{{ material.url }}" target="_blank" rel="noopener noreferrer">Abrir no YouTube &nearr;</a></div>
+    {% elif material.modo == 'audio' %}
+    <div class="audio-container"><audio controls preload="metadata" src="{{ endereco }}" aria-label="Áudio da aula {{ aula.nome }}">Seu navegador não suporta este áudio.</audio></div>
+    <a class="link-material" href="{{ endereco }}" target="_blank" rel="noopener noreferrer">Abrir áudio em outra guia &nearr;</a>
+    {% elif material.modo == 'imagem' %}
+    <a href="{{ endereco }}" target="_blank" rel="noopener noreferrer"><img class="imagem-aula" src="{{ endereco }}" alt="Material da aula {{ aula.nome }}" loading="lazy"></a>
+    {% elif material.modo in ('arquivo', 'link') %}
+    <a class="botao secundario espacamento" href="{{ endereco }}" target="_blank" rel="noopener noreferrer">Abrir material &nearr;</a>
+    {% elif material.modo == 'invalido' %}
+    <p class="material-indisponivel">O material desta aula ainda não está disponível. Entre em contato com o professor.</p>
+    {% endif %}
+
+    {% if aula.texto %}<div class="texto-aula">{{ aula.texto }}</div>{% endif %}
+</article>
+

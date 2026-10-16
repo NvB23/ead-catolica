@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf with context %}
+{% block conteudo %}
+<section class="estudos-pagina">
+<div class="titulo-pagina">
+    <div><p class="sobretitulo">MEUS ESTUDOS</p><h1>Meus cursos</h1><p>{{ inscricoes|length }} curso(s) para continuar aprendendo, no seu ritmo.</p></div>
+    <a class="botao secundario" href="{{ url_for('pagina.aluno_cursos') }}">Explorar cursos &rarr;</a>
+</div>
+<div class="lista-inscricoes">
+{% for inscricao in inscricoes %}
+<article class="curso-inscrito">
+    <div class="curso-inscrito-topo">
+        <span class="curso-iniciais" aria-hidden="true">{{ inscricao.curso.nome[:2]|upper }}</span>
+        <div class="curso-inscrito-info"><p class="curso-trilha">{{ inscricao.curso.trilha.nome }}</p><h2>{{ inscricao.curso.nome }}</h2><p>{{ inscricao.curso.conteudos|length }} aula(s) disponíveis</p></div>
+        <span class="status-curso"><span aria-hidden="true"></span>Inscrito</span>
+    </div>
+    <div class="progresso-desativado">Progresso indisponível</div>
+    <div class="curso-inscrito-acoes">
+        <a class="botao" href="{{ url_for('pagina.aluno_aulas', id=inscricao.curso_id) }}">Acessar aulas &rarr;</a>
+    </div>
+    <div class="curso-inscrito-rodape"><span>{{ g.usuario.graduacao.nome }}</span>
+        <form action="{{ url_for('inscricao.remover', id=inscricao.id) }}" method="post" onsubmit="return confirm('Cancelar sua inscrição neste curso?');">{{ csrf() }}<button class="cancelar-inscricao" type="submit">Cancelar inscrição</button></form>
+    </div>
+</article>
+{% else %}
+<div class="vazio"><span class="icone-vazio">+</span><h2>Seu próximo aprendizado está por aqui</h2><p>Escolha um curso da sua graduação para começar.</p><a class="botao espacamento" href="{{ url_for('pagina.aluno_cursos') }}">Encontrar um curso</a></div>
+{% endfor %}
+</div>
+</section>
+{% endblock %}
+

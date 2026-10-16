@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf with context %}
+{% block conteudo %}
+<section class="caixa-login">
+    <p class="sobretitulo">BEM-VINDO À EAD CATÓLICA</p><h1>Entre na sua conta</h1>
+    <p class="ajuda">Acesse seus cursos e continue aprendendo.</p>
+    {% if erro %}<div class="mensagem erro" role="alert">{{ erro }}</div>{% endif %}
+    <form method="post" action="{{ url_for('auth.login') }}">
+        {{ csrf() }}
+        <label for="email">E-mail</label><input id="email" type="email" name="email" value="{{ dados.get('email', '') }}" autocomplete="username" required maxlength="150">
+        <label for="senha">Senha</label><input id="senha" type="password" name="senha" autocomplete="current-password" required maxlength="255">
+        <button class="botao largura" type="submit">Entrar</button>
+    </form>
+    <p class="texto-centro">Ainda não tem conta? <a href="{{ url_for('auth.cadastro') }}">Cadastre-se como aluno</a></p>
+    <p class="nota">Professores entram com a conta previamente cadastrada.</p>
+</section>
+{% endblock %}

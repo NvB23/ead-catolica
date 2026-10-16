@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<div class="titulo-pagina"><div><p class="sobretitulo">ACOMPANHAMENTO</p><h1>Alunos dos meus cursos</h1><p>Veja os alunos inscritos nos cursos em que você leciona.</p></div></div>
+{% if inscricoes %}
+<div class="tabela-container"><table>
+    <thead><tr><th>Aluno</th><th>Curso</th><th>Graduação</th><th>Situação</th></tr></thead>
+    <tbody>{% for inscricao in inscricoes %}
+    <tr><td><strong>{{ inscricao.aluno.nome }}</strong><small>{{ inscricao.aluno.email }}</small></td><td>{{ inscricao.curso.nome }}</td><td>{{ inscricao.aluno.graduacao.nome }}</td><td><span class="etiqueta">Inscrito</span></td></tr>
+    {% endfor %}</tbody>
+</table></div>
+{% else %}<div class="vazio"><h2>Nenhum aluno inscrito</h2><p>As inscrições nos seus cursos aparecerão aqui.</p></div>{% endif %}
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf, campo with context %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('pagina.professor_cursos') }}">&larr; Meus cursos</a>
+<div class="titulo-pagina"><h1>{{ titulo }}</h1></div>
+<section class="painel formulario"><form action="{% if curso %}{{ url_for('curso.editar', id=curso.id) }}{% else %}{{ url_for('curso.salvar') }}{% endif %}" method="post">
+    {{ csrf() }}{{ campo('nome', 'Nome do curso', curso.nome if curso else '', obrigatorio=true) }}
+    <label for="descricao">Descrição</label><textarea id="descricao" name="descricao" rows="4">{{ curso.descricao or '' if curso else '' }}</textarea>
+    <label for="trilha_id">Trilha</label><select id="trilha_id" name="trilha_id" required><option value="">Selecione uma trilha</option>{% for trilha in trilhas %}<option value="{{ trilha.id }}" {% if curso and curso.trilha_id == trilha.id %}selected{% endif %}>{{ trilha.nome }}</option>{% endfor %}</select>
+    {% if not trilhas %}<p class="ajuda">Você precisa de uma trilha vinculada às suas graduações. <a href="{{ url_for('pagina.nova_trilha') }}">Cadastrar trilha</a></p>{% endif %}
+    <p class="ajuda">O curso ficará associado à sua conta de professor.</p>
+    <div class="acoes espacamento"><button class="botao" type="submit">Salvar curso</button><a class="botao secundario" href="{{ url_for('pagina.professor_cursos') }}">Cancelar</a></div>
+</form></section>
+{% endblock %}

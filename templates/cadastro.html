@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf, campo with context %}
+{% block conteudo %}
+<section class="caixa-login">
+    <p class="sobretitulo">CADASTRO DE ALUNO</p><h1>Comece seus estudos</h1>
+    <p class="ajuda">Escolha a graduação em que você estuda. Ela define os cursos disponíveis para sua conta.</p>
+    {% if erro %}<div class="mensagem erro" role="alert">{{ erro }}</div>{% endif %}
+    <form action="{{ url_for('auth.cadastro') }}" method="post">
+        {{ csrf() }}
+        {{ campo('nome', 'Nome completo', dados.get('nome'), obrigatorio=true) }}
+        {{ campo('email', 'E-mail', dados.get('email'), tipo='email', obrigatorio=true) }}
+        {{ campo('senha', 'Senha', tipo='password', obrigatorio=true, limite=255) }}
+        <label for="graduacao_id">Sua graduação</label>
+        <select id="graduacao_id" name="graduacao_id" required><option value="">Selecione sua graduação</option>
+            {% for graduacao in graduacoes %}<option value="{{ graduacao.id }}" {% if dados.get('graduacao_id') == graduacao.id %}selected{% endif %}>{{ graduacao.nome }}</option>{% endfor %}
+        </select>
+        <button class="botao largura" type="submit">Criar conta de aluno</button>
+    </form>
+    <p class="texto-centro">Já tem conta? <a href="{{ url_for('auth.login') }}">Entrar</a></p>
+</section>
+{% endblock %}

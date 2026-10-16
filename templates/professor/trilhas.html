@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf with context %}
+{% block conteudo %}
+<div class="titulo-pagina"><div><p class="sobretitulo">ORGANIZAÇÃO DOS CURSOS</p><h1>Trilhas</h1><p>Agrupe cursos nas graduações em que você leciona.</p></div><a class="botao" href="{{ url_for('pagina.nova_trilha') }}">+ Nova trilha</a></div>
+<div class="lista">{% for trilha in trilhas %}
+<article class="painel"><h2>{{ trilha.nome }}</h2><p class="ajuda">{% for graduacao in trilha.graduacoes %}{{ graduacao.nome }}{% if not loop.last %} · {% endif %}{% endfor %}</p><p class="ajuda">{{ trilha.cursos|length }} curso(s)</p>
+    {% if acesso.pode_gerenciar_trilha(g.usuario, trilha) %}<div class="acoes"><a class="botao secundario pequeno" href="{{ url_for('pagina.editar_trilha', id=trilha.id) }}">Editar</a><form action="{{ url_for('trilha.remover', id=trilha.id) }}" method="post" onsubmit="return confirm('Excluir esta trilha e seus cursos?');">{{ csrf() }}<button class="botao excluir pequeno" type="submit">Excluir</button></form></div>
+    {% else %}<p class="ajuda">Trilha compartilhada com outros professores. A edição está restrita.</p>{% endif %}
+</article>
+{% else %}<div class="vazio"><h2>Nenhuma trilha disponível</h2><p>Crie uma trilha para organizar seus cursos.</p></div>{% endfor %}</div>
+{% endblock %}

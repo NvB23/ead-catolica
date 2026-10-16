@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('pagina.aluno_inscricoes') }}">&larr; Meus cursos</a>
+<div class="titulo-pagina"><div><p class="sobretitulo">{{ curso.trilha.nome }}</p><h1>{{ curso.nome }}</h1>{% if curso.descricao %}<p>{{ curso.descricao }}</p>{% endif %}</div><span class="contagem-aulas">{{ curso.conteudos|length }} aula(s)</span></div>
+<div class="sala-aula">
+    <div class="lista aulas-principais">{% for aula in curso.conteudos %}{% include 'aula_material.html' %}{% else %}<div class="vazio"><h2>Aulas em preparação</h2><p>O professor ainda não adicionou aulas a este curso.</p></div>{% endfor %}</div>
+    <aside class="indice-aulas">
+        <p class="sobretitulo">CONTEÚDO DO CURSO</p><h2>Suas aulas</h2>
+        <nav aria-label="Aulas do curso">{% for aula in curso.conteudos %}<a href="#aula-{{ aula.id }}"><span>{{ '%02d'|format(aula.ordem) }}</span><div><strong>{{ aula.nome }}</strong><small>{{ aula.tipo.value }}</small></div></a>{% else %}<p class="ajuda">Nenhuma aula adicionada.</p>{% endfor %}</nav>
+        <a class="botao secundario largura" href="{{ url_for('pagina.aluno_inscricoes') }}">Meus cursos</a>
+    </aside>
+</div>
+{% endblock %}
+

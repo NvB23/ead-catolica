@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf with context %}
+{% block conteudo %}
+<div class="titulo-pagina"><div><p class="sobretitulo">ÁREA DO PROFESSOR</p><h1>Meus cursos</h1><p>Organize seus cursos e os materiais de cada aula.</p></div><a class="botao" href="{{ url_for('pagina.novo_curso') }}">+ Novo curso</a></div>
+<div class="grade-cursos">{% for curso in cursos %}
+    <article class="cartao-curso"><div class="capa-curso"><span>{{ curso.nome[:2]|upper }}</span><span>{{ curso.trilha.nome }}</span></div><div class="corpo-cartao">
+        <h2>{{ curso.nome }}</h2><p>{{ curso.descricao or 'Sem descrição.' }}</p><p class="ajuda">{{ curso.conteudos|length }} aula(s) · {{ curso.inscricoes|length }} aluno(s)</p>
+        <a class="botao" href="{{ url_for('pagina.professor_aulas', id=curso.id) }}">Gerenciar aulas</a>
+        <div class="acoes espacamento"><a class="botao secundario pequeno" href="{{ url_for('pagina.editar_curso', id=curso.id) }}">Editar curso</a><form action="{{ url_for('curso.remover', id=curso.id) }}" method="post" onsubmit="return confirm('Excluir este curso e suas aulas?');">{{ csrf() }}<button class="botao excluir pequeno" type="submit">Excluir</button></form></div>
+    </div></article>
+{% else %}<div class="vazio"><h2>Você ainda não tem cursos</h2><p>Cadastre uma trilha e depois crie seu primeiro curso.</p><a href="{{ url_for('pagina.professor_trilhas') }}">Ir para trilhas</a></div>{% endfor %}</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf, campo with context %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('pagina.professor_trilhas') }}">&larr; Trilhas</a>
+<div class="titulo-pagina"><h1>{{ titulo }}</h1></div>
+<section class="painel formulario"><form action="{% if trilha %}{{ url_for('trilha.editar', id=trilha.id) }}{% else %}{{ url_for('trilha.salvar') }}{% endif %}" method="post">
+    {{ csrf() }}{{ campo('nome', 'Nome da trilha', trilha.nome if trilha else '', obrigatorio=true) }}
+    <fieldset><legend>Graduações atendidas</legend>{% for graduacao in g.usuario.graduacoes %}<label class="opcao"><input type="checkbox" name="graduacao_ids" value="{{ graduacao.id }}" {% if trilha and graduacao in trilha.graduacoes %}checked{% endif %}>{{ graduacao.nome }}</label>{% else %}<p class="ajuda">Seu cadastro precisa estar vinculado a uma graduação.</p>{% endfor %}</fieldset>
+    <p class="ajuda">Selecione pelo menos uma graduação. Trilhas que já possuem cursos mantêm suas graduações.</p>
+    <div class="acoes espacamento"><button class="botao" type="submit">Salvar trilha</button><a class="botao secundario" href="{{ url_for('pagina.professor_trilhas') }}">Cancelar</a></div>
+</form></section>
+{% endblock %}

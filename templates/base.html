@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo or 'Bem-vindo' }} | EAD Católica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="container topo">
+            <a class="marca" href="{{ url_for('pagina.inicio') }}"><span class="simbolo">EC</span><span>EAD Católica<small>FAFIC · Plataforma de aprendizagem</small></span></a>
+            {% if g.usuario %}
+            <div class="usuario-topo"><div><strong>{{ g.usuario.nome }}</strong><small>{{ 'Professor' if g.usuario.tipo == 'professor' else 'Aluno' }}</small></div>
+                <form action="{{ url_for('auth.sair') }}" method="post"><input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"><button class="botao secundario pequeno" type="submit">Sair</button></form>
+            </div>
+            {% endif %}
+        </div>
+        {% if g.usuario %}
+        <nav class="container navegacao" aria-label="Navegação principal">
+            {% if g.usuario.tipo == 'professor' %}
+            <a href="{{ url_for('pagina.professor_cursos') }}">Meus cursos</a>
+            <a href="{{ url_for('pagina.professor_trilhas') }}">Trilhas</a>
+            <a href="{{ url_for('pagina.professor_alunos') }}">Alunos inscritos</a>
+            {% else %}
+            <a href="{{ url_for('pagina.aluno_cursos') }}">Cursos da graduação</a>
+            <a href="{{ url_for('pagina.aluno_inscricoes') }}">Meus cursos</a>
+            {% endif %}
+            <a href="{{ url_for('pagina.perfil') }}">Meu perfil</a>
+        </nav>
+        {% endif %}
+    </header>
+    <main class="container principal">
+        {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}<div class="mensagem {{ categoria }}" role="status">{{ mensagem }}</div>{% endfor %}
+        {% block conteudo %}{% endblock %}
+    </main>
+    <footer class="container rodape"><span>EAD Católica</span><span>Projeto acadêmico · FAFIC</span></footer>
+</body>
+</html>

@@ -14,19 +14,6 @@ class InscricaoDAO:
             return False
 
     @staticmethod
-    def editar(inscricao, progresso, concluido, data_conclusao):
-        try:
-            inscricao.progresso = progresso
-            inscricao.concluido = concluido
-            inscricao.data_conclusao = data_conclusao
-
-            db.session.commit()
-            return True
-        except Exception:
-            db.session.rollback()
-            return False
-
-    @staticmethod
     def remover(inscricao):
         try:
             db.session.delete(inscricao)

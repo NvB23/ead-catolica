@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<section class="vazio"><p class="sobretitulo">{{ codigo }}</p><h1>{{ titulo }}</h1><p>{{ mensagem }}</p><a class="botao espacamento" href="{{ url_for('pagina.inicio') }}">Voltar ao início</a></section>
+{% endblock %}

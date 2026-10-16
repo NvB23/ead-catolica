@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf, campo with context %}
+{% block conteudo %}
+<div class="titulo-pagina"><div><p class="sobretitulo">MINHA CONTA</p><h1>Meu perfil</h1></div></div>
+<div class="duas-colunas">
+    <section class="painel"><h2>{{ 'Professor' if g.usuario.tipo == 'professor' else 'Aluno' }}</h2>
+        <p class="ajuda">Graduação vinculada à sua conta:</p>
+        {% if g.usuario.tipo == 'aluno' %}<p class="etiqueta">{{ g.usuario.graduacao.nome }}</p>
+        {% else %}{% for graduacao in g.usuario.graduacoes %}<p class="etiqueta">{{ graduacao.nome }}</p>{% else %}<p class="ajuda">Nenhuma graduação vinculada. Solicite o ajuste do seu cadastro.</p>{% endfor %}{% endif %}
+    </section>
+    <section class="painel"><h2>Dados pessoais</h2>
+        <form action="{{ url_for(g.usuario.tipo + '.editar', id=g.usuario.id) }}" method="post">
+            {{ csrf() }}
+            {{ campo('nome', 'Nome', g.usuario.nome, obrigatorio=true) }}
+            {{ campo('email', 'E-mail', g.usuario.email, tipo='email', obrigatorio=true) }}
+            {{ campo('senha', 'Nova senha (opcional)', tipo='password', limite=255) }}
+            <small class="ajuda">Deixe em branco para manter sua senha.</small>
+            {% if g.usuario.tipo == 'professor' %}
+            {{ campo('formacoes', 'Formação', g.usuario.formacoes, limite=1000) }}
+            <label for="sobre">Sobre você</label><textarea id="sobre" name="sobre" rows="4">{{ g.usuario.sobre or '' }}</textarea>
+            {% endif %}
+            <button class="botao espacamento" type="submit">Salvar alterações</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

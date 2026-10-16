@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% from 'componentes.html' import csrf, campo with context %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('pagina.professor_aulas', id=curso.id) }}">&larr; Aulas de {{ curso.nome }}</a>
+<div class="titulo-pagina"><div><p class="sobretitulo">{{ curso.nome }}</p><h1>{{ titulo }}</h1><p>Organize o conteúdo e escolha como o aluno vai acessar o material.</p></div></div>
+<section class="painel formulario"><form action="{% if aula %}{{ url_for('conteudo.editar', id=aula.id) }}{% else %}{{ url_for('conteudo.salvar') }}{% endif %}" method="post">
+    {{ csrf() }}<input type="hidden" name="curso_id" value="{{ curso.id }}">
+    {{ campo('nome', 'Nome da aula', aula.nome if aula else '', obrigatorio=true) }}
+    <label for="descricao">Descrição</label><textarea id="descricao" name="descricao" rows="3">{{ aula.descricao or '' if aula else '' }}</textarea>
+    <div class="campos-linha"><div><label for="tipo">Tipo de conteúdo</label><select id="tipo" name="tipo">{% for valor, nome in [('texto', 'Texto'), ('video', 'Vídeo'), ('audio', 'Áudio'), ('imagem', 'Imagem')] %}<option value="{{ valor }}" {% if aula and aula.tipo.value == valor %}selected{% endif %}>{{ nome }}</option>{% endfor %}</select></div><div><label for="ordem">Ordem</label><input id="ordem" name="ordem" type="number" min="0" step="1" value="{{ aula.ordem if aula else 1 }}" required></div></div>
+
+    <div class="grupo-material">
+        <label for="url">Endereço ou caminho do material</label>
+        <input id="url" name="url" value="{{ aula.url or '' if aula else '' }}" maxlength="500" placeholder="bucket/video/minha-aula.mp4" aria-describedby="ajuda-material">
+        <div class="dica-material" id="ajuda-material"><strong>Para adicionar um vídeo</strong><p>Coloque o arquivo na pasta <code>bucket/video</code> e informe o caminho acima. Você também pode colar um link do YouTube.</p><p>Caminhos copiados do Windows, como <code>bucket\video\aula.mp4</code>, também são aceitos.</p></div>
+    </div>
+    <label for="texto">Conteúdo em texto</label><textarea id="texto" name="texto" rows="6" placeholder="Preencha este campo quando o tipo de conteúdo for Texto.">{{ aula.texto or '' if aula else '' }}</textarea>
+    <div class="acoes espacamento"><button class="botao" type="submit">Salvar aula</button><a class="botao secundario" href="{{ url_for('pagina.professor_aulas', id=curso.id) }}">Cancelar</a></div>
+</form></section>
+{% endblock %}
+
