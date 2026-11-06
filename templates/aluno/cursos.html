@@ -1,17 +1,33 @@
 {% extends 'base.html' %}
 {% from 'componentes.html' import csrf, professores with context %}
 {% block conteudo %}
-<div class="titulo-pagina"><div><p class="sobretitulo">{{ g.usuario.graduacao.nome }}</p><h1>Cursos da sua graduação</h1><p>Escolha um curso e comece a estudar.</p></div></div>
+<section class="boas-vindas">
+    <div><p class="sobretitulo">SEU CAMINHO DE APRENDIZAGEM</p><p class="saudacao">Olá, {{ g.usuario.nome }}.</p><h1>Conhecimento para<br><span>o seu próximo passo.</span></h1><p>Explore as trilhas, escolha um curso e avance nos conteúdos.</p></div>
+    <div class="selo-editorial" aria-label="Organização dos estudos"><div><b>01</b><span>Escolha uma<strong>Trilha</strong></span></div><div><b>02</b><span>Explore os<strong>Cursos</strong></span></div><div><b>03</b><span>Aprenda com os<strong>Conteúdos</strong></span></div></div>
+</section>
+<div class="titulo-pagina"><div><p class="sobretitulo">{{ g.usuario.graduacao.nome }}</p><h2>Explore suas trilhas</h2><p>Cursos organizados por área para você encontrar o que quer aprender.</p></div></div>
 <form class="busca" method="get" action="{{ url_for('pagina.aluno_cursos') }}"><label class="somente-leitor" for="busca">Buscar curso</label><input id="busca" name="busca" placeholder="Buscar pelo nome do curso" value="{{ busca }}"><button class="botao secundario" type="submit">Buscar</button></form>
+{% if cursos %}
+<nav class="atalhos-trilhas" aria-label="Ir para uma trilha">
+    {% for grupo in cursos|groupby('trilha_id') %}<a href="#trilha-{{ grupo.grouper }}"><span>{{ grupo.list[0].trilha.nome }}</span><b>{{ grupo.list|length }}</b></a>{% endfor %}
+</nav>
+{% endif %}
+<div class="catalogo-trilhas">
+{% for grupo in cursos|groupby('trilha_id') %}
+<section class="secao-trilha" id="trilha-{{ grupo.grouper }}" aria-labelledby="titulo-trilha-{{ grupo.grouper }}">
+    <header class="trilha-cabecalho"><span class="trilha-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M7 10v7h7M14 6h7m-3-3 3 3-3 3"/></svg></span><div><p class="sobretitulo">TRILHA DE APRENDIZAGEM</p><h2 id="titulo-trilha-{{ grupo.grouper }}">{{ grupo.list[0].trilha.nome }}</h2></div><span class="trilha-contagem">{{ grupo.list|length }} curso(s){% if busca is defined and busca %} encontrados{% endif %}</span></header>
 <div class="grade-cursos">
-    {% for curso in cursos %}
-    <article class="cartao-curso"><div class="capa-curso"><span>{{ curso.nome[:2]|upper }}</span><span>{{ curso.trilha.nome }}</span></div><div class="corpo-cartao">
-        <h2>{{ curso.nome }}</h2><p>{{ curso.descricao or 'Amplie seus conhecimentos com este curso.' }}</p>
-        <p class="ajuda">{{ professores(curso) }} · {{ curso.conteudos|length }} aula(s)</p>
+    {% for curso in grupo.list %}
+    <article class="cartao-curso"><div class="capa-curso"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-4-2-7-1-10 1Zm0 0v15"/></svg></span><span>CURSO</span></div><div class="corpo-cartao">
+        <h3>{{ curso.nome }}</h3><p>{{ curso.descricao or 'Amplie seus conhecimentos com este curso.' }}</p>
+        <p class="ajuda">{% if curso.professores %}{{ professores(curso) }} · {% endif %}{{ curso.conteudos|length }} conteúdo(s)</p>
         {% set controle = namespace(inscrito=false) %}{% for inscricao in inscricoes %}{% if inscricao.curso_id == curso.id %}{% set controle.inscrito = true %}{% endif %}{% endfor %}
         {% if controle.inscrito %}<a class="botao" href="{{ url_for('pagina.aluno_aulas', id=curso.id) }}">Acessar aulas</a>
         {% else %}<form action="{{ url_for('inscricao.salvar') }}" method="post">{{ csrf() }}<input type="hidden" name="curso_id" value="{{ curso.id }}"><button class="botao" type="submit">Inscrever-se</button></form>{% endif %}
     </div></article>
-    {% else %}<div class="vazio"><h2>Nenhum curso disponível</h2><p>{% if busca %}Tente outro nome na busca.{% else %}Os cursos da sua graduação aparecerão aqui quando forem cadastrados pelos professores.{% endif %}</p></div>{% endfor %}
+    {% endfor %}
+</div>
+</section>
+{% else %}<div class="vazio"><h2>Nenhum curso disponível</h2><p>{% if busca %}Tente outro nome na busca.{% else %}Os cursos da sua graduação aparecerão aqui quando forem cadastrados pelos professores.{% endif %}</p></div>{% endfor %}
 </div>
 {% endblock %}

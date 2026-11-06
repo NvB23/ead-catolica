@@ -1,199 +1,307 @@
+/* EAD Católica — tokens → base → layout → components → pages → responsive */
+:root {
+  --azul: #082578; --azul-escuro: #071d65; --texto: #26334d; --cinza: #59677d;
+  --borda: #dde3ee; --papel: #f5f7fb; --superficie: #ffffff; --noite: #071d65;
+  --ouro: #ffcc00; --ouro-claro: #fff3bf; --verde: #276443; --vinho: #973d4c;
+  --display: 'Sora', 'Segoe UI', sans-serif; --ui: 'DM Sans', 'Segoe UI', sans-serif;
+  --raio: 12px; --raio-pequeno: 8px; --sombra: 0 12px 32px #071d6509;
+  --espaco-1: 8px; --espaco-2: 16px; --espaco-3: 24px; --espaco-4: 32px; --espaco-5: 48px;
+  --transicao: 180ms ease; --sidebar: 0px;
+}
 * { box-sizing: border-box; }
-:root { --azul: #204e99; --azul-escuro: #18345e; --texto: #23334b; --cinza: #64748b; --borda: #dce3ec; }
-body { margin: 0; background: #f4f6fa; color: var(--texto); font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; line-height: 1.5; }
-a { color: var(--azul); text-decoration: none; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--papel); color: var(--texto); font: 14px/1.6 var(--ui); }
+a { color: var(--azul); text-decoration: none; text-underline-offset: 4px; }
 a:hover { text-decoration: underline; }
 button, input, select, textarea { font: inherit; }
-button, select, input[type="checkbox"], summary { cursor: pointer; }
-.container { width: min(1180px, 92%); margin: 0 auto; }
-.cabecalho { background: #fff; border-bottom: 1px solid var(--borda); }
-.topo { display: flex; align-items: center; justify-content: space-between; min-height: 88px; gap: 20px; }
-.marca { display: flex; align-items: center; gap: 12px; color: var(--azul-escuro); font-size: 21px; font-weight: 700; }
+button, select, input[type=checkbox], summary { cursor: pointer; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid #245cce; outline-offset: 4px; }
+h1, h2, h3 { font: 600 17px/1.5 var(--display); letter-spacing: -.3px; margin: 0 0 12px; }
+h1 { font: 600 clamp(28px, 3.2vw, 44px)/1.22 var(--display); letter-spacing: -1.5px; margin: 0 0 16px; }
+h2 { font: 600 24px/1.35 var(--display); letter-spacing: -.7px; margin: 0; }
+h3 { font: 600 18px/1.4 var(--ui); margin: 0 0 8px; }
+p { overflow-wrap: anywhere; }
+[hidden] { display: none; }
+.container { width: min(1240px, calc(100% - 64px)); margin-inline: auto; }
+.principal { min-height: calc(100vh - 205px); padding-top: var(--espaco-4); padding-bottom: var(--espaco-3); animation: aparecer 300ms ease both; }
+.principal:focus { outline: none; }
+.cabecalho { background: var(--superficie); border-bottom: 1px solid var(--borda); }
+.topo { min-height: 100px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.marca { display: flex; align-items: center; gap: 16px; color: var(--noite); font: 700 22px/1.35 var(--display); letter-spacing: -.8px; }
 .marca:hover { text-decoration: none; }
-.simbolo { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 9px; background: var(--azul); color: #fff; font-size: 17px; letter-spacing: -1px; }
-.marca small { display: block; color: var(--cinza); font-size: 12px; font-weight: 400; }
-.identificacao { display: flex; align-items: center; gap: 9px; color: var(--cinza); font-size: 13px; }
-.ponto { width: 4px; height: 4px; background: #99a5b5; border-radius: 50%; }
-.apresentacao { padding: 37px 0 27px; }
-.sobretitulo { color: var(--azul); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin: 0 0 9px; }
-h1 { color: var(--azul-escuro); font-size: clamp(25px, 3vw, 34px); line-height: 1.25; letter-spacing: -1px; margin: 0 0 12px; }
-.apresentacao > p:last-child { color: var(--cinza); margin: 0; }
-.resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-.resumo > div { background: #fff; border: 1px solid var(--borda); border-radius: 9px; padding: 17px 21px; display: flex; align-items: center; gap: 14px; }
-.resumo strong { font-size: 28px; color: var(--azul); line-height: 1.2; }
-.resumo span { color: var(--cinza); font-size: 12px; }
-.abas { display: flex; gap: 24px; border-bottom: 1px solid var(--borda); margin-bottom: 28px; overflow-x: auto; }
-.abas a { color: var(--cinza); font-weight: 600; font-size: 14px; padding: 0 0 13px; white-space: nowrap; border-bottom: 3px solid transparent; }
-.abas a.ativa { color: var(--azul); border-color: var(--azul); }
-.abas a:hover { color: var(--azul); text-decoration: none; }
-.area-principal { display: grid; grid-template-columns: minmax(0, 1fr) 335px; gap: 28px; align-items: start; }
-.titulo-secao { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
-h2 { font-size: 22px; line-height: 1.3; color: var(--azul-escuro); margin: 0; }
-.titulo-secao p { margin: 4px 0 0; color: var(--cinza); font-size: 12px; }
-.botao { border: 1px solid var(--azul); border-radius: 6px; background: var(--azul); color: #fff; padding: 10px 15px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 600; font-size: 13px; line-height: 1.4; white-space: nowrap; }
-.botao:hover { background: #173e7f; color: #fff; text-decoration: none; }
-.botao.secundario { background: #fff; color: var(--azul); border-color: #cbd7e8; }
-.botao.secundario:hover { background: #edf3fc; }
-.botao.excluir { background: #fff; border-color: #ead8db; color: #ad3749; }
-.botao.excluir:hover { background: #fff2f3; }
-.botao.pequeno { padding: 6px 10px; font-size: 12px; }
-.busca { display: flex; gap: 8px; margin-bottom: 20px; }
-.busca input { margin: 0; flex: 1; min-width: 0; background: #fff; }
-.grade-cursos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 19px; }
-.cartao-curso { border: 1px solid var(--borda); border-radius: 9px; background: #fff; overflow: hidden; }
-.capa-curso { height: 112px; padding: 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #e8eef8; }
-.capa-curso > span:first-child { display: grid; place-items: center; width: 59px; height: 59px; border-radius: 12px; background: #fff; color: var(--azul); font-size: 23px; font-weight: 700; }
-.categoria { font-size: 11px; color: var(--azul); max-width: 55%; overflow-wrap: anywhere; text-align: right; }
-.corpo-cartao { padding: 18px; }
-h3 { margin: 0 0 8px; color: var(--azul-escuro); font-size: 17px; overflow-wrap: anywhere; }
-.corpo-cartao > p { color: var(--cinza); margin: 0 0 13px; font-size: 13px; overflow-wrap: anywhere; }
-.detalhe, .corpo-cartao > p.detalhe { color: var(--cinza); font-size: 11px; }
-.corpo-cartao > p.professores { font-size: 12px; color: var(--texto); }
-.link-aulas { display: inline-block; font-size: 13px; font-weight: 600; margin: 3px 0 13px; }
-.acoes { display: flex; gap: 7px; flex-wrap: wrap; }
-.acoes form { margin: 0; }
-.corpo-cartao .acoes { border-top: 1px solid #edf0f5; padding-top: 13px; }
-.painel-formulario { background: #fff; border: 1px solid var(--borda); border-radius: 9px; padding: 23px; scroll-margin-top: 20px; }
-.painel-formulario h2 { font-size: 20px; }
-.ajuda { color: var(--cinza); font-size: 12px; margin: 10px 0 22px; }
-label, legend { font-size: 12px; font-weight: 600; }
-label { display: block; margin: 14px 0 6px; }
-input, select, textarea { border: 1px solid #ccd5e1; border-radius: 5px; padding: 9px 10px; width: 100%; background: #fff; color: var(--texto); font-size: 13px; }
-textarea { resize: vertical; }
-input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #a9c5f0; outline-offset: 2px; }
-fieldset { border: 1px solid var(--borda); border-radius: 5px; margin: 17px 0 0; padding: 5px 11px 10px; min-width: 0; max-height: 190px; overflow-y: auto; }
-fieldset small { display: block; color: var(--cinza); font-size: 11px; margin-top: 5px; }
-.opcao { display: flex; align-items: flex-start; gap: 8px; font-weight: 400; margin: 7px 0 0; overflow-wrap: anywhere; }
-.opcao input { width: 14px; height: 14px; margin: 3px 0 0; accent-color: var(--azul); flex-shrink: 0; }
-.ajuda-campo { display: block; margin-top: 5px; color: var(--cinza); font-size: 11px; overflow-wrap: anywhere; }
-.salvar { margin-top: 22px; width: 100%; }
-.cancelar { display: block; text-align: center; font-size: 12px; margin-top: 13px; }
-.campos-linha { display: grid; grid-template-columns: 1fr 85px; gap: 12px; }
-.mensagem { border: 1px solid; border-radius: 6px; padding: 12px 16px; margin-bottom: 22px; font-size: 13px; }
-.mensagem.sucesso { color: #1e6549; border-color: #b9ddcc; background: #edf8f2; }
-.mensagem.erro { color: #99333f; border-color: #efc9ce; background: #fff0f2; }
-.vazio { background: #fff; border: 1px dashed #c8d3e2; border-radius: 8px; padding: 52px 24px; text-align: center; }
-.vazio h3 { font-size: 17px; }
-.vazio p { color: var(--cinza); font-size: 13px; margin: 6px 0 0; }
-.icone-vazio { display: inline-grid; place-items: center; width: 45px; height: 45px; background: #edf2fa; color: var(--azul); border-radius: 50%; font-size: 26px; margin-bottom: 15px; }
-.tabela-container { border: 1px solid var(--borda); border-radius: 8px; overflow: auto; background: #fff; }
-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
-th { background: #f8fafc; color: var(--cinza); font-size: 11px; font-weight: 600; padding: 13px 15px; }
-td { border-top: 1px solid #e9edf3; padding: 16px 15px; vertical-align: middle; overflow-wrap: anywhere; }
-td strong { color: var(--azul-escuro); }
-td small { display: block; font-size: 11px; margin-top: 3px; color: var(--cinza); }
-.etiqueta { color: var(--azul); background: #edf2fa; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
-
-.inscricao-resumo { display: grid; gap: 3px; padding: 12px; margin-bottom: 15px; border: 1px solid var(--borda); border-radius: 5px; font-size: 13px; }
-.inscricao-resumo span { color: var(--cinza); font-size: 12px; }
-.lista-aulas { display: grid; gap: 16px; }
-.cartao-aula { background: #fff; border: 1px solid var(--borda); border-radius: 8px; padding: 21px; }
-.aula-topo { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
-.cartao-aula > p { font-size: 13px; color: var(--cinza); }
-details { margin: 13px 0; font-size: 13px; }
-summary { color: var(--azul); font-weight: 600; }
-.texto-aula { white-space: pre-wrap; overflow-wrap: anywhere; }
-.aviso { color: var(--cinza); font-size: 12px; }
-.rodape { border-top: 1px solid var(--borda); padding: 22px 0; margin-top: 42px; display: flex; justify-content: space-between; gap: 15px; font-size: 11px; color: var(--cinza); }
-.somente-leitor { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); }
-@media (max-width: 1000px) { .area-principal { grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; } .grade-cursos { grid-template-columns: 1fr; } .resumo > div { padding: 15px; gap: 10px; } }
-@media (max-width: 760px) { .area-principal { grid-template-columns: 1fr; } .resumo { grid-template-columns: repeat(2, 1fr); gap: 10px; } .identificacao { display: none; } .apresentacao { padding-top: 28px; } .abas { gap: 21px; } .painel-formulario { padding: 22px; } .grade-cursos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .grade-cursos { grid-template-columns: 1fr; } .titulo-secao { align-items: flex-start; } .resumo > div { padding: 13px 11px; } .resumo strong { font-size: 25px; } .resumo span { font-size: 11px; } .rodape { flex-direction: column; gap: 4px; } }
-
-.principal { padding-top: 32px; min-height: calc(100vh - 235px); }
-.navegacao { display: flex; gap: 25px; padding: 0 0 16px; overflow-x: auto; }
-.navegacao a { color: var(--azul); font-size: 13px; font-weight: 600; white-space: nowrap; }
-.usuario-topo { display: flex; gap: 18px; align-items: center; }
-.usuario-topo strong { display: block; font-size: 13px; }
+.marca small { display: block; font: 400 11px/1.5 var(--ui); color: var(--cinza); letter-spacing: 0; margin-top: 5px; }
+.simbolo { display: block; width: 76px; height: 76px; flex-shrink: 0; background: white; }
+.simbolo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.usuario-topo { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.usuario-topo strong { display: block; font-size: 12px; max-width: 250px; overflow-wrap: anywhere; }
 .usuario-topo small { display: block; font-size: 11px; color: var(--cinza); }
-.usuario-topo form { margin: 0; }
-.caixa-login { max-width: 450px; margin: 20px auto 35px; background: #fff; padding: 32px; border: 1px solid var(--borda); border-radius: 9px; }
-.caixa-login h1 { font-size: 27px; }
-.caixa-login .ajuda { font-size: 13px; margin-bottom: 24px; }
-.largura { width: 100%; margin-top: 23px; }
-.texto-centro { text-align: center; color: var(--cinza); font-size: 12px; margin-top: 22px; }
-.nota { border-top: 1px solid var(--borda); padding-top: 16px; font-size: 11px; color: var(--cinza); }
-.titulo-pagina { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
-.titulo-pagina h1 { margin-bottom: 7px; font-size: 30px; }
-.titulo-pagina p:not(.sobretitulo) { color: var(--cinza); font-size: 14px; margin: 0; }
-.painel { background: #fff; border: 1px solid var(--borda); padding: 25px; border-radius: 8px; }
-.painel h2 { font-size: 20px; overflow-wrap: anywhere; }
-.formulario { max-width: 700px; }
-.formulario form > label:first-of-type { margin-top: 0; }
-.lista { display: grid; gap: 20px; }
-.duas-colunas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 24px; align-items: start; }
-.espacamento { margin-top: 20px; }
-.voltar { display: inline-block; margin-bottom: 23px; font-size: 13px; }
-.texto-aula { white-space: pre-wrap; margin-top: 18px; line-height: 1.8; font-size: 14px; }
-.grade-cursos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.usuario-topo form { margin: 0 0 0 12px; }
+.avatar { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #edf2ff; color: var(--azul); font-size: 16px; font-weight: 700; flex-shrink: 0; }
+.autenticado { padding-left: 0; }
+.autenticado .marca { color: var(--noite); }
+.autenticado .marca small { color: var(--cinza); }
+.navegacao { width: 100%; margin: 0; padding: 0 max(32px, calc((100% - 1240px) / 2)); background: var(--noite); display: flex; align-items: center; gap: 8px; }
+.nav-legenda { display: none; }
+.navegacao a { display: flex; align-items: center; gap: 10px; color: #dbe5ff; padding: 19px 20px; border-bottom: 3px solid transparent; font-size: 13px; font-weight: 500; transition: background var(--transicao), color var(--transicao); }
+.navegacao a::before { content: ''; width: 18px; height: 18px; flex-shrink: 0; background: currentColor; mask: url('icons.svg') center / contain no-repeat; }
+.navegacao a:last-of-type::before { mask-image: url('user.svg'); }
+.navegacao a:hover { background: #ffffff0c; text-decoration: none; }
+.navegacao a[aria-current] { color: white; border-bottom-color: var(--ouro); background: #ffffff0c; }
+.nav-assinatura { margin-left: auto; color: #c5d4f6; text-align: right; padding-left: 24px; }
+.nav-assinatura span { font-size: 10px; }
+.nav-assinatura small { display: none; }
+.menu-alternar.botao { display: none; }
+.rodape { border-top: 1px solid var(--borda); padding-block: 23px; display: flex; justify-content: space-between; gap: 12px; color: var(--cinza); font-size: 11px; }
+.rodape > span:first-child { font-weight: 700; letter-spacing: .3px; }
+.pular-conteudo { position: fixed; z-index: 10; top: -100px; left: 16px; padding: 12px 20px; background: var(--superficie); border: 2px solid var(--azul); border-radius: var(--raio-pequeno); }
+.pular-conteudo:focus { top: 12px; }
+.somente-leitor { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); }
+/* Shared controls and feedback */
+.botao { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; border: 1px solid var(--azul); border-radius: var(--raio-pequeno); padding: 11px 19px; background: var(--azul); color: white; font-size: 12px; font-weight: 600; line-height: 1.5; text-align: center; transition: background var(--transicao), transform var(--transicao), box-shadow var(--transicao); }
+.botao:hover { background: #123eaa; color: white; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 10px #071d6514; }
+.botao.secundario { background: transparent; border-color: #c4cede; color: var(--azul); }
+.botao.secundario:hover { background: #eef3ff; }
+.botao.excluir { background: transparent; color: var(--vinho); border-color: #ddc8ca; }
+.botao.excluir:hover { background: #f8edee; }
+.botao.pequeno { min-height: 36px; padding: 7px 12px; font-size: 11px; }
+.acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.acoes form { margin: 0; }
+label, legend { font-size: 12px; font-weight: 600; }
+label { display: block; margin: 20px 0 7px; }
+input, select, textarea { width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid #b8c4d8; border-radius: var(--raio-pequeno); background: var(--superficie); color: var(--texto); font-size: 14px; transition: border-color var(--transicao), box-shadow var(--transicao); }
+input:focus, select:focus, textarea:focus { border-color: var(--azul); box-shadow: 0 0 0 3px #0825780c; }
+input::placeholder, textarea::placeholder { color: #64748b; }
+textarea { resize: vertical; line-height: 1.7; }
+fieldset { border: 1px solid var(--borda); padding: 12px 16px; border-radius: var(--raio-pequeno); margin: 24px 0 0; min-width: 0; }
+.opcao { display: flex; align-items: flex-start; gap: 10px; font-weight: 400; margin: 10px 0; }
+.opcao input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--azul); flex-shrink: 0; }
+.campos-linha { display: grid; grid-template-columns: minmax(0, 1fr) 90px; gap: 16px; }
+.ajuda, .ajuda-campo, fieldset small { color: var(--cinza); font-size: 12px; line-height: 1.7; }
+.ajuda { margin: 10px 0 20px; }
+.ajuda-campo, fieldset small { display: block; margin-top: 6px; }
+.largura, .salvar { width: 100%; margin-top: 26px; }
+.espacamento { margin-top: 24px; }
+.cancelar, .texto-centro { display: block; text-align: center; margin-top: 24px; font-size: 12px; color: var(--cinza); }
+.texto-centro a { font-weight: 600; text-decoration: underline; }
+.mensagem { border: 1px solid; border-left-width: 4px; border-radius: var(--raio-pequeno); padding: 14px 18px; margin-bottom: 24px; font-size: 13px; }
+.mensagem.sucesso { color: #24513c; background: #eef6ef; border-color: #7fa88c; }
+.mensagem.erro { color: #813342; background: #fdf0ef; border-color: #cb9298; }
+.etiqueta, .status-curso, .contagem-aulas { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 30px; font-size: 11px; font-weight: 500; background: #eaf0ff; color: #18377b; }
+.status-curso > span { width: 6px; height: 6px; border-radius: 50%; background: #18377b; }
+.contagem-aulas { background: var(--ouro-claro); color: #624b00; white-space: nowrap; }
+.vazio { padding: 64px 24px; text-align: center; background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); }
+.vazio::before { content: ''; display: block; width: 60px; height: 60px; margin: 0 auto 24px; background: var(--ouro-claro) url('icons.svg') center / 28px no-repeat; border-radius: 50%; }
+.vazio p { color: var(--cinza); max-width: 480px; margin: 14px auto; }
+.icone-vazio { display: none; }
+/* Page headings and course collections */
+.sobretitulo { margin: 0 0 10px; color: #385b97; font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+.titulo-pagina { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.titulo-pagina p:not(.sobretitulo) { color: var(--cinza); margin: 0; font-size: 13px; }
+.boas-vindas { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: center; gap: 48px; padding: 28px 36px; margin-bottom: 32px; background: var(--noite); border-radius: var(--raio); color: white; border-bottom: 4px solid var(--ouro); }
+.boas-vindas::after { content: none; }
+.boas-vindas h2 { color: white; }
+.boas-vindas p:last-child { color: #cad8f5; font-size: 13px; margin: 0; max-width: 480px; }
+.selo-editorial { display: grid; gap: 0; padding: 0; border: 1px solid #ffffff26; border-radius: 10px; background: #ffffff06; }
+.boas-vindas h1 { color: white; }
+.boas-vindas h1 span { color: var(--ouro); }
+.boas-vindas .sobretitulo { color: var(--ouro); font-size: 9px; }
+.boas-vindas .saudacao { color: #d5dff6; margin: 16px 0 10px; font-size: 14px; }
+.selo-editorial > div { display: flex; gap: 18px; align-items: center; padding: 13px 20px; }
+.selo-editorial > div + div { border-top: 1px solid #ffffff20; }
+.selo-editorial b { color: var(--ouro); font: 500 22px var(--display); }
+.selo-editorial span { font-size: 11px; color: #b9c9ef; }
+.selo-editorial strong { display: block; font: 500 16px var(--display); color: white; margin-top: 3px; }
+.busca { display: flex; gap: 10px; max-width: 700px; margin-bottom: 24px; }
+.busca input { flex: 1; background: var(--superficie) url('search.svg') 16px center / 18px no-repeat; padding-left: 44px; }
+.grade-cursos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .grade-cursos > .vazio { grid-column: 1 / -1; }
-.corpo-cartao h2 { font-size: 19px; margin-bottom: 10px; overflow-wrap: anywhere; }
-.corpo-cartao > p.ajuda { margin-bottom: 19px; font-size: 12px; }
-.corpo-cartao form { margin: 0; }
-.corpo-cartao .acoes { border: 0; padding-top: 0; }
-.capa-curso > span:last-child { font-size: 12px; color: var(--azul); max-width: 60%; text-align: right; overflow-wrap: anywhere; }
-
-.abaixo-cartao { margin-top: 12px; }
-.etiqueta { display: inline-block; }
-@media (max-width: 950px) { .grade-cursos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 650px) { .grade-cursos, .duas-colunas { grid-template-columns: 1fr; } .titulo-pagina { align-items: flex-start; flex-direction: column; } .titulo-pagina h1 { font-size: 26px; } .caixa-login { padding: 23px; margin-top: 0; } .usuario-topo { gap: 9px; } .usuario-topo strong { max-width: 110px; overflow-wrap: anywhere; font-size: 11px; } .marca { font-size: 16px; } .marca small { font-size: 10px; } .simbolo { width: 35px; height: 35px; } .topo { gap: 12px; } .painel { padding: 20px; } }
-
-.estudos-pagina { max-width: 990px; margin: 0 auto; }
-.lista-inscricoes { display: grid; gap: 22px; max-width: 990px; }
-.curso-inscrito { background: #fff; border: 1px solid #dce4ef; border-radius: 12px; overflow: hidden; }
-.curso-inscrito-topo { display: flex; align-items: center; gap: 17px; padding: 25px 27px 18px; }
-.curso-iniciais { width: 60px; height: 60px; display: grid; place-items: center; flex-shrink: 0; background: #eaf0fb; color: #234f93; font-size: 22px; font-weight: 700; border-radius: 12px; }
+.cartao-curso { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--borda); border-radius: var(--raio); background: var(--superficie); transition: transform var(--transicao), box-shadow var(--transicao); }
+.cartao-curso:hover { transform: translateY(-3px); border-color: #819bd4; box-shadow: var(--sombra); }
+.capa-curso { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 24px 0; color: var(--azul); }
+.capa-curso::before, .capa-curso::after { content: none; }
+.capa-curso::after { right: 0; top: -83px; border-radius: 48% 48% 0 0; }
+.cartao-curso:nth-child(3n + 2) .capa-curso { color: var(--azul); }
+.cartao-curso:nth-child(3n) .capa-curso { color: var(--azul); }
+.capa-curso > span { position: relative; z-index: 1; }
+.capa-curso > span:first-child { display: grid; place-items: center; width: 44px; height: 44px; background: #eff3ff; color: var(--azul); border-radius: 10px; font: 600 16px var(--display); }
+.capa-curso > span:last-child { font-size: 9px; font-weight: 700; letter-spacing: 1.4px; color: var(--cinza); }
+.capa-curso svg { width: 24px; height: 24px; }
+.corpo-cartao { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 20px 24px 24px; }
+.corpo-cartao h2 { font-size: 18px; margin-bottom: 12px; }
+.corpo-cartao > p { margin: 0 0 18px; font-size: 13px; line-height: 1.75; color: var(--cinza); }
+.corpo-cartao > .ajuda { padding-top: 12px; border-top: 1px solid var(--borda); width: 100%; font-size: 11px; }
+.corpo-cartao > .botao, .corpo-cartao > form { margin-top: auto; }
+.corpo-cartao .acoes { width: 100%; }
+.lista, .lista-aulas { display: grid; gap: 24px; }
+.painel, .painel-formulario, .cartao-aula { background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 30px; }
+.formulario { max-width: 800px; border-top: 3px solid var(--ouro); }
+.formulario form > label:first-of-type { margin-top: 0; }
+.duas-colunas { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+.voltar { display: inline-flex; align-items: center; min-height: 36px; font-size: 12px; color: var(--cinza); margin-bottom: 18px; }
+.tabela-container { overflow: auto; border: 1px solid var(--borda); background: var(--superficie); border-radius: var(--raio); }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+th { padding: 16px 24px; background: #edf2fa; color: #4d607c; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+td { padding: 22px 24px; border-top: 1px solid var(--borda); overflow-wrap: anywhere; }
+td small { display: block; color: var(--cinza); font-size: 11px; margin-top: 5px; }
+tbody tr:hover { background: #f8faff; }
+/* Track hierarchy */
+.atalhos-trilhas { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 36px; }
+.atalhos-trilhas a { display: inline-flex; align-items: center; gap: 14px; padding: 11px 16px; border: 1px solid #c9d5ee; border-radius: 7px; background: white; font-size: 12px; font-weight: 500; }
+.atalhos-trilhas a:hover { background: #eaf0ff; text-decoration: none; border-color: var(--azul); }
+.atalhos-trilhas b { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 5px; background: #edf2ff; font-size: 10px; }
+.catalogo-trilhas { display: grid; gap: 40px; }
+.secao-trilha { scroll-margin-top: 24px; min-width: 0; }
+.trilha-cabecalho { display: flex; gap: 16px; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--borda); }
+.trilha-cabecalho > div { min-width: 0; }
+.trilha-cabecalho .sobretitulo { margin: 0 0 5px; font-size: 9px; }
+.trilha-cabecalho h2 { font-size: 23px; }
+.trilha-icone { display: grid; place-items: center; background: var(--ouro); color: var(--noite); width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0; }
+.trilha-icone svg { width: 26px; height: 26px; }
+.trilha-contagem { margin-left: auto; font-size: 12px; color: var(--cinza); flex-shrink: 0; }
+.corpo-cartao h3 { margin-bottom: 12px; }
+/* Enrollment and reading room */
+.estudos-pagina { max-width: 1150px; margin-inline: auto; }
+.lista-inscricoes { display: grid; gap: 24px; }
+.curso-inscrito { overflow: hidden; background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); }
+.curso-inscrito-topo { display: flex; align-items: center; gap: 20px; padding: 28px; }
+.curso-iniciais { display: grid; place-items: center; flex-shrink: 0; width: 64px; height: 64px; border-radius: 10px; background: var(--noite); color: var(--ouro); font: 600 22px var(--display); }
 .curso-inscrito-info { flex: 1; min-width: 0; }
-.curso-inscrito-info h2 { font-size: 22px; margin: 2px 0 4px; overflow-wrap: anywhere; }
-.curso-inscrito-info p { font-size: 12px; color: var(--cinza); margin: 0; }
-.curso-inscrito-info .curso-trilha { font-size: 11px; color: #41618d; font-weight: 600; }
-.status-curso { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 20px; font-size: 11px; color: #42618d; background: #edf3fc; white-space: nowrap; }
-.status-curso > span { width: 6px; height: 6px; border-radius: 50%; background: #6184b6; }
-
-.curso-inscrito-acoes { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 17px; margin: 0 27px; padding: 18px 0; border-top: 1px solid #edf0f5; }
-
-.curso-inscrito-rodape { background: #fbfcfe; border-top: 1px solid #edf0f5; padding: 12px 27px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.curso-inscrito-rodape > span { font-size: 11px; color: var(--cinza); }
+.curso-inscrito-info h2 { font-size: 22px; margin: 5px 0 8px; }
+.curso-inscrito-info p { font-size: 12px; margin: 0; color: var(--cinza); }
+.curso-inscrito-info .curso-trilha { color: #385b97; font-size: 10px; letter-spacing: 1px; }
+.progresso-desativado { margin: 0 28px 20px; font-size: 11px; color: var(--cinza); border-left: 2px solid var(--ouro); padding-left: 12px; }
+.curso-inscrito-acoes { margin: 0 28px; padding-bottom: 24px; }
+.curso-inscrito-rodape { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 28px; border-top: 1px solid var(--borda); background: #f8faff; font-size: 11px; color: var(--cinza); }
 .curso-inscrito-rodape form { margin: 0; }
-.cancelar-inscricao { padding: 0; border: 0; background: transparent; color: #a94d59; font-size: 11px; }
+.cancelar-inscricao { border: 0; padding: 8px 0; background: transparent; color: var(--vinho); font-size: 11px; }
 .cancelar-inscricao:hover { text-decoration: underline; }
-
-.sala-aula { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 25px; align-items: start; }
+.sala-aula { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
 .aulas-principais { min-width: 0; }
-.aula-conteudo { scroll-margin-top: 22px; padding: 25px; }
-.aula-cabecalho { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
-.aula-numero { display: grid; place-items: center; width: 42px; height: 42px; flex-shrink: 0; background: #eff3fa; border-radius: 9px; color: #325b98; font-weight: 600; font-size: 14px; }
-.aula-cabecalho .sobretitulo { font-size: 10px; margin-bottom: 4px; }
-.aula-cabecalho h2 { font-size: 20px; }
-.aula-descricao { margin: 0 0 20px; color: var(--cinza); font-size: 13px; overflow-wrap: anywhere; }
-.video-container { background: #101622; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 9px; }
-.youtube-player { min-height: 200px; }
+.aula-conteudo { scroll-margin-top: 24px; }
+.aula-conteudo:target { border-color: #315cba; }
+.aula-cabecalho { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.aula-numero { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border: 1px solid var(--borda); border-radius: var(--raio-pequeno); color: #244997; font: 27px var(--display); }
+.aula-cabecalho .sobretitulo { margin-bottom: 6px; font-size: 9px; }
+.aula-cabecalho h2 { font-size: 22px; }
+.aula-descricao { color: var(--cinza); font-size: 13px; margin-bottom: 24px; }
+.video-container { aspect-ratio: 16 / 9; background: #061541; border-radius: var(--raio-pequeno); overflow: hidden; width: 100%; }
 .video-container video, .video-container iframe { width: 100%; height: 100%; display: block; border: 0; object-fit: contain; }
-.material-rodape { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-top: 12px; font-size: 11px; color: var(--cinza); }
-.material-rodape > a { flex-shrink: 0; }
-.audio-container { background: #f4f7fb; padding: 18px; border-radius: 9px; }
+.material-rodape { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; color: var(--cinza); font-size: 11px; margin-top: 12px; }
+.audio-container { background: #edf2fc; border-radius: var(--raio-pequeno); padding: 16px; }
 .audio-container audio { display: block; width: 100%; }
-.imagem-aula { display: block; max-width: 100%; max-height: 650px; margin: 10px auto; border-radius: 8px; object-fit: contain; }
-.link-material { display: inline-block; margin-top: 12px; font-size: 12px; }
-.material-indisponivel { padding: 14px; background: #fff8e8; color: #866428; font-size: 12px; border-radius: 6px; }
-.indice-aulas { background: #fff; border: 1px solid var(--borda); border-radius: 10px; padding: 22px 17px; position: sticky; top: 22px; }
-.indice-aulas h2 { font-size: 18px; margin-bottom: 18px; }
-.indice-aulas nav { display: grid; gap: 4px; }
-.indice-aulas nav > a { display: flex; gap: 10px; align-items: flex-start; padding: 10px 7px; border-radius: 6px; color: #405576; }
-.indice-aulas nav > a:hover { background: #eff4fb; text-decoration: none; }
-.indice-aulas nav > a > span { font-size: 11px; font-weight: 600; color: #8190a5; padding-top: 1px; }
-.indice-aulas nav strong { display: block; font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
-.indice-aulas nav small { display: block; font-size: 10px; color: var(--cinza); margin-top: 3px; }
-.indice-aulas .botao { font-size: 11px; }
-.contagem-aulas { border: 1px solid #d6dfec; color: #5e718e; border-radius: 20px; padding: 6px 12px; font-size: 12px; white-space: nowrap; }
-.grupo-material { margin-top: 24px; padding-top: 5px; border-top: 1px solid #e8edf4; }
-.dica-material { padding: 13px 15px; background: #f4f7fc; border: 1px solid #e4ebf6; border-radius: 6px; margin: 10px 0 20px; font-size: 11px; color: #64748b; }
-.dica-material strong { color: #456088; font-weight: 600; }
-.dica-material p { margin: 5px 0 0; }
-.dica-material code { font-size: 10px; overflow-wrap: anywhere; color: #38567f; }
-@media (max-width: 900px) { .sala-aula { grid-template-columns: 1fr; } .indice-aulas { position: static; } .indice-aulas nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 650px) { .curso-inscrito-topo { padding: 20px 19px 16px; gap: 12px; flex-wrap: wrap; } .curso-iniciais { width: 45px; height: 45px; font-size: 17px; } .curso-inscrito-info { min-width: 160px; } .curso-inscrito-info h2 { font-size: 19px; } .status-curso { margin-left: 57px; margin-top: -3px; }  .curso-inscrito-acoes { margin: 0 19px; align-items: flex-start; flex-direction: column; }  .curso-inscrito-rodape { padding: 12px 19px; flex-wrap: wrap; } .aula-conteudo { padding: 18px; } .material-rodape { flex-direction: column; gap: 7px; } .indice-aulas nav { grid-template-columns: 1fr; } }
+.imagem-aula { display: block; max-width: 100%; max-height: 650px; object-fit: contain; border-radius: var(--raio-pequeno); margin: 16px auto; }
+.texto-aula { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 15px; line-height: 1.9; margin-top: 24px; }
+.link-material { display: inline-block; font-size: 12px; margin-top: 16px; }
+.material-indisponivel { padding: 16px; background: #fff5cf; color: #685200; border-radius: var(--raio-pequeno); }
+.indice-aulas { padding: 24px; background: var(--superficie); border: 1px solid var(--borda); border-top: 3px solid var(--ouro); border-radius: var(--raio); }
+.indice-aulas h2 { font-size: 22px; margin-bottom: 20px; }
+.indice-aulas nav { display: grid; gap: 6px; }
+.indice-aulas nav > a { display: flex; align-items: flex-start; gap: 12px; padding: 12px; color: var(--texto); border-radius: var(--raio-pequeno); }
+.indice-aulas nav > a:hover { background: #eef3fc; text-decoration: none; }
+.indice-aulas nav > a > span { color: #385b97; font: 23px var(--display); }
+.indice-aulas nav strong { display: block; font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
+.indice-aulas nav small { display: block; color: var(--cinza); font-size: 10px; margin-top: 4px; }
+.abaixo-cartao { margin-top: 12px; }
+.grupo-material { border-top: 1px solid var(--borda); margin-top: 24px; padding-top: 8px; }
+.dica-material { background: #eff3fa; padding: 16px; border-radius: var(--raio-pequeno); font-size: 12px; color: var(--cinza); margin-top: 12px; }
+.dica-material p { margin: 8px 0 0; }
+.dica-material code { overflow-wrap: anywhere; font-size: 11px; }
+/* Public access — editorial paper and a geometric open book */
+.publico .principal { padding-top: 36px; }
+.acesso-layout { display: grid; grid-template-columns: 1fr; max-width: 1180px; margin: 0 auto 28px; border: 1px solid var(--borda); border-radius: 18px; overflow: hidden; background: var(--superficie); box-shadow: var(--sombra); }
+.acesso-editorial { position: relative; padding: 48px; color: #cfdbf5; background: var(--noite); overflow: hidden; border-bottom: 4px solid var(--ouro); }
+.acesso-editorial .sobretitulo { color: var(--ouro); }
+.acesso-editorial h2 { font: 600 clamp(30px, 3.2vw, 44px)/1.25 var(--display); letter-spacing: -1.5px; color: white; margin: 28px 0 22px; }
+.acesso-editorial h2 em { color: var(--ouro); font-style: normal; font-weight: 600; }
+.acesso-editorial > p:not(.sobretitulo) { font-size: 13px; line-height: 1.9; max-width: 340px; }
+.arte-livro { display: grid; gap: 0; margin: 40px 0; border: 1px solid #ffffff26; border-radius: 10px; }
+.arte-livro::before, .arte-livro::after { content: none; }
+.arte-livro::after { transform: scaleX(-1) skewY(12deg); left: 50%; }
+.arte-livro > div { display: none; }
+.arte-livro > span { display: flex; align-items: center; gap: 20px; padding: 15px 20px; color: var(--ouro); font: 500 18px var(--display); }
+.arte-livro > span + span { border-top: 1px solid #ffffff20; }
+.arte-livro strong { color: white; font: 400 13px var(--ui); }
+.arte-livro small { font: italic 16px var(--display); letter-spacing: 0; }
+.editorial-rodape { display: flex; justify-content: space-between; border-top: 1px solid #ffffff21; padding-top: 20px; font-size: 9px; letter-spacing: 2px; }
+.caixa-login { padding: 40px 28px; align-self: center; }
+.caixa-login h1 { font-size: 30px; letter-spacing: -1px; }
+.caixa-login .ajuda { margin-bottom: 30px; }
+.nota { margin: 26px 0 0; padding-top: 20px; border-top: 1px solid var(--borda); font-size: 11px; color: var(--cinza); text-align: center; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-
-.progresso-desativado { margin: 0 27px 18px; padding: 12px 14px; border: 1px solid #e3e8ef; border-radius: 6px; background: #f6f8fb; color: #8390a3; font-size: 12px; }
-@media (max-width: 650px) { .progresso-desativado { margin: 0 19px 18px; } }
+@media (min-width: 650px) {
+ .grade-cursos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ .duas-colunas { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
+}
+@media (min-width: 1000px) {
+ .grade-cursos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+ .acesso-layout { grid-template-columns: 1fr 1fr; }
+ .caixa-login { padding: 48px 56px; }
+ .sala-aula { grid-template-columns: minmax(0, 1fr) 290px; }
+ .indice-aulas { position: sticky; top: 24px; }
+}
+@media (max-width: 999px) {
+ .nav-assinatura { display: none; }
+ .boas-vindas { grid-template-columns: minmax(0, 1fr) 240px; padding: 32px; gap: 24px; }
+ .acesso-editorial h2 br { display: none; }
+ .arte-livro, .editorial-rodape { display: none; }
+ .acesso-editorial > p:not(.sobretitulo) { max-width: 100%; }
+ .acesso-editorial { padding: 32px; }
+ .caixa-login { padding: 36px; }
+}
+@media (max-width: 760px) {
+ .container { width: calc(100% - 40px); }
+ .topo { min-height: 88px; gap: 12px; }
+ .marca { gap: 10px; font-size: 18px; }
+ .marca small { font-size: 10px; }
+ .simbolo { width: 60px; height: 60px; }
+ .usuario-topo > div { display: none; }
+ .usuario-topo { gap: 6px; }
+ .usuario-topo form { margin-left: 4px; }
+ .avatar { width: 32px; height: 32px; font-size: 14px; }
+ .navegacao { flex-direction: column; align-items: stretch; padding: 12px 20px; gap: 4px; }
+ .navegacao a { padding: 12px 16px; border-bottom: 0; border-left: 3px solid transparent; border-radius: 6px; }
+ .navegacao a[aria-current] { border-left-color: var(--ouro); }
+ .navegacao.menu-recolhivel:not(.aberta) { display: none; }
+ .menu-alternar:not([hidden]) { display: flex; margin: 0 20px 14px; min-height: 36px; padding: 7px 16px; }
+ .titulo-pagina { align-items: flex-start; flex-direction: column; gap: 16px; }
+ .boas-vindas { grid-template-columns: 1fr; padding: 28px; }
+ .selo-editorial { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+ .selo-editorial > div { padding: 12px; display: block; }
+ .selo-editorial > div + div { border-top: 0; border-left: 1px solid #ffffff20; }
+ .selo-editorial b { display: block; margin-bottom: 8px; font-size: 18px; }
+ .selo-editorial strong { font-size: 12px; }
+ .selo-editorial span { font-size: 9px; }
+ .trilha-cabecalho { flex-wrap: wrap; gap: 12px; }
+ .trilha-cabecalho > div { flex: 1; }
+ .trilha-cabecalho h2 { font-size: 20px; }
+ .trilha-contagem { width: calc(100% - 60px); margin-left: 60px; font-size: 11px; }
+ .curso-inscrito-topo { flex-wrap: wrap; gap: 16px; padding: 22px; }
+ .curso-inscrito-info { min-width: 160px; }
+ .curso-inscrito-info h2 { font-size: 20px; }
+ .curso-iniciais { width: 50px; height: 50px; font-size: 20px; }
+}
+@media (max-width: 480px) {
+ .container { width: calc(100% - 32px); }
+ .marca small { max-width: 130px; font-size: 9px; }
+ .marca { font-size: 16px; }
+ .simbolo { width: 52px; height: 60px; }
+ .usuario-topo .avatar { display: none; }
+ .principal { padding-top: 24px; }
+ .boas-vindas { padding: 24px; margin-bottom: 32px; }
+ .boas-vindas h1 { font-size: 27px; letter-spacing: -1px; }
+ .selo-editorial > div { padding: 10px 8px; }
+ .painel, .painel-formulario, .cartao-aula { padding: 22px; }
+ .caixa-login { padding: 28px 22px; }
+ .caixa-login h1 { font-size: 26px; }
+ .acesso-editorial { padding: 28px 22px; }
+ .acesso-editorial h2 { font-size: 30px; }
+ .acesso-editorial > p:not(.sobretitulo) { font-size: 12px; }
+ .acesso-editorial .sobretitulo { font-size: 9px; }
+ .rodape { flex-direction: column; gap: 4px; }
+ .aula-cabecalho h2 { font-size: 20px; }
+ .atalhos-trilhas a { width: 100%; justify-content: space-between; }
+ th, td { padding: 14px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }

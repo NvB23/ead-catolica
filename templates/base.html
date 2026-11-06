@@ -4,33 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo or 'Bem-vindo' }} | EAD Católica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='interface.js') }}" defer></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="{{ 'autenticado' if g.usuario else 'publico' }}">
+    <a class="pular-conteudo" href="#conteudo-principal">Pular para o conteúdo</a>
     <header class="cabecalho">
         <div class="container topo">
-            <a class="marca" href="{{ url_for('pagina.inicio') }}"><span class="simbolo">EC</span><span>EAD Católica<small>FAFIC · Plataforma de aprendizagem</small></span></a>
+            <a class="marca" href="{{ url_for('pagina.inicio') }}"><span class="simbolo"><img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Faculdade Católica da Paraíba" width="76" height="76"></span><span>EAD Católica<small>Sua plataforma de aprendizagem</small></span></a>
             {% if g.usuario %}
-            <div class="usuario-topo"><div><strong>{{ g.usuario.nome }}</strong><small>{{ 'Professor' if g.usuario.tipo == 'professor' else 'Aluno' }}</small></div>
+            <div class="usuario-topo"><span class="avatar" aria-hidden="true">{{ g.usuario.nome[:1]|upper }}</span><div><strong>{{ g.usuario.nome }}</strong><small>{{ 'Professor' if g.usuario.tipo == 'professor' else 'Aluno' }}</small></div>
                 <form action="{{ url_for('auth.sair') }}" method="post"><input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"><button class="botao secundario pequeno" type="submit">Sair</button></form>
             </div>
             {% endif %}
         </div>
         {% if g.usuario %}
-        <nav class="container navegacao" aria-label="Navegação principal">
+        <button class="menu-alternar botao secundario" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>Menu</button>
+        <nav id="menu-principal" class="container navegacao" aria-label="Navegação principal"><p class="nav-legenda">SEU ESPAÇO DE APRENDIZAGEM</p>
             {% if g.usuario.tipo == 'professor' %}
             <a href="{{ url_for('pagina.professor_cursos') }}">Meus cursos</a>
             <a href="{{ url_for('pagina.professor_trilhas') }}">Trilhas</a>
             <a href="{{ url_for('pagina.professor_alunos') }}">Alunos inscritos</a>
             {% else %}
-            <a href="{{ url_for('pagina.aluno_cursos') }}">Cursos da graduação</a>
+            <a href="{{ url_for('pagina.aluno_cursos') }}">Trilhas da graduação</a>
             <a href="{{ url_for('pagina.aluno_inscricoes') }}">Meus cursos</a>
             {% endif %}
             <a href="{{ url_for('pagina.perfil') }}">Meu perfil</a>
+            <div class="nav-assinatura" aria-hidden="true"><span>Seu próximo passo começa aqui.</span><small>CATÓLICA · EAD</small></div>
         </nav>
         {% endif %}
     </header>
-    <main class="container principal">
+    <main id="conteudo-principal" class="container principal" tabindex="-1">
         {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}<div class="mensagem {{ categoria }}" role="status">{{ mensagem }}</div>{% endfor %}
         {% block conteudo %}{% endblock %}
     </main>

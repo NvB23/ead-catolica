@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% from 'componentes.html' import csrf, campo with context %}
 {% block conteudo %}
+<div class="acesso-layout">
+    <aside class="acesso-editorial" aria-label="EAD Católica">
+        <p class="sobretitulo">FACULDADE CATÓLICA DA PARAÍBA</p>
+        <h2>Seu futuro começa<br>com o próximo<br><em>aprendizado.</em></h2>
+        <p>Trilhas de conhecimento, cursos da sua graduação e conteúdos para ir além. Tudo em um só lugar.</p>
+        <div class="arte-livro" aria-hidden="true"><span>01 <strong>Encontre sua trilha</strong></span><span>02 <strong>Escolha seu curso</strong></span><span>03 <strong>Explore os conteúdos</strong></span></div>
+        <div class="editorial-rodape"><span>ENSINO A DISTÂNCIA</span><span>FAFIC</span></div>
+    </aside>
 <section class="caixa-login">
     <p class="sobretitulo">CADASTRO DE ALUNO</p><h1>Comece seus estudos</h1>
     <p class="ajuda">Escolha a graduação em que você estuda. Ela define os cursos disponíveis para sua conta.</p>
@@ -18,4 +26,5 @@
     </form>
     <p class="texto-centro">Já tem conta? <a href="{{ url_for('auth.login') }}">Entrar</a></p>
 </section>
+</div>
 {% endblock %}
